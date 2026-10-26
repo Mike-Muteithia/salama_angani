@@ -57,6 +57,18 @@ def create_booking():
     
     return jsonify({'booking_reference': pnr, 'status': 'SUCCESS'}), 201
 
+@app.route('/api/init-db', methods=['GET'])
+def init_db():
+    # Create tables and seed data when this URL is visited
+    db.create_all()
+    if not Flight.query.first():
+        db.session.add(Flight(flight_number='SA-101', origin='Nairobi', destination='Mombasa', available_seats=50, base_price=120.00))
+        db.session.add(Flight(flight_number='SA-205', origin='Nairobi', destination='Kisumu', available_seats=2, base_price=85.00))
+        db.session.commit()
+        return jsonify({'message': 'Production database successfully seeded!'}), 200
+    
+    return jsonify({'message': 'Database is already seeded.'}), 200
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
