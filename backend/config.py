@@ -10,3 +10,5 @@ class Config:
         
     SQLALCHEMY_DATABASE_URI = db_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # Add the secret key for token generation (defaults to a dev key if not in .env)
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "super-secret-development-key")
